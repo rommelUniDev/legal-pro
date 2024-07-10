@@ -6,15 +6,22 @@
     "library.js",
     "next.js",
     "react-internal.js",
-    "server.js"
+    "server.js",
+    "standard.js"
   ],
   "devDependencies": {
-    "@vercel/style-guide": "^5.2.0",
-    "eslint-config-turbo": "^2.0.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-only-warn": "^1.1.0",
-    "@typescript-eslint/parser": "^7.1.0",
     "@typescript-eslint/eslint-plugin": "^7.1.0",
+    "@typescript-eslint/parser": "^7.1.0",
+    "@vercel/style-guide": "^5.2.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-config-turbo": "^1.12.4",
+    "eslint-import-resolver-typescript": "^3.6.0",
+    "eslint-plugin-disable": "^2.0.3",
+    "eslint-plugin-fp": "^2.3.0",
+    "eslint-plugin-only-warn": "^1.1.0",
+    "eslint-plugin-prettier": "4.2.1",
+    "eslint-plugin-react-hooks": "^4.6.2",
+    "eslint-plugin-sort-exports": "^0.8.0",
     "typescript": "^5.3.3"
   }
 }
