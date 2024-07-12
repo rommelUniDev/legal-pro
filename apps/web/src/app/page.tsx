@@ -1,67 +1,158 @@
+// eslint-disable-next-line fp/no-unused-expression
 "use client";
 
-import { useEffect, useState, ChangeEvent, FormEvent } from "react";
-import { Button } from "@repo/ui/button";
+import { type Lawyer } from "@repo/domain/src/lawyer-mgmt/Lawyer";
+// import { Button } from "@repo/ui/components/ui/button";
+// import { input } from "@repo/ui/components/ui/input";
+import React, { useState } from "react";
 
-const API_HOST = process.env.NEXT_PUBLIC_API_HOST || "http://localhost:3001";
+import LawyerItem from "../components/LawyerItem";
+import { lawyers } from "../lib/const/dummyLawyerList";
 
-export default function Web() {
-  const [name, setName] = useState<string>("");
-  const [response, setResponse] = useState<{ message: string } | null>(null);
-  const [error, setError] = useState<string | undefined>();
+const LawyersPage: React.FC = () => {
+  const [location, setLocation] = useState<string>("");
+  const [expertise, setExpertise] = useState<string>("");
+  const [day, setDay] = useState<string>("");
+  const [priceRange, setPriceRange] = useState<number[]>([0, 1000]);
+  const [affiliation, setAffiliation] = useState<string>("");
 
-  useEffect(() => {
-    setResponse(null);
-    setError(undefined);
-  }, [name]);
+  const filteredLawyers = Object.values(lawyers).filter((lawyer: Lawyer) => {
+    const matchesLocation = location
+      ? lawyer.location.includes(location)
+      : true;
+    const matchesExpertise = expertise
+      ? lawyer.legalExpertise.includes(expertise)
+      : true;
+    const matchesDay = day
+      ? lawyer.availability.some((avail) => avail.day === day)
+      : true;
+    const matchesPrice =
+      lawyer.price >= priceRange[0] && lawyer.price <= priceRange[1];
+    const matchesAffiliation = affiliation
+      ? lawyer.affiliation.includes(affiliation)
+      : true;
 
-  const onChange = (e: ChangeEvent<HTMLInputElement>) =>
-    setName(e.target.value);
+    return (
+      matchesLocation &&
+      matchesExpertise &&
+      matchesDay &&
+      matchesPrice &&
+      matchesAffiliation
+    );
+  });
 
-  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    try {
-      const result = await fetch(`${API_HOST}/message/${name}`);
-      const response = await result.json();
-      setResponse(response);
-    } catch (err) {
-      console.error(err);
-      setError("Unable to fetch response");
-    }
-  };
-
-  const onReset = () => {
-    setName("");
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    return e.preventDefault();
   };
 
   return (
-    <div>
-      <h1>Web</h1>
-      <form onSubmit={onSubmit}>
-        <label htmlFor="name">Name </label>
-        <input
-          type="text"
-          name="name"
-          id="name"
-          value={name}
-          onChange={onChange}
-        ></input>
-        <Button type="submit">Submit</Button>
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-4">Lawyers</h1>
+
+      <form onSubmit={handleFormSubmit} className="space-y-4">
+        <div className="flex flex-col">
+          <label htmlFor="location" className="mb-1">
+            Location
+          </label>
+          <input
+            id="location"
+            type="text"
+            onChange={(e) => setLocation(e.target.value)}
+            className="p-2 border rounded"
+          />
+        </div>
+
+        <div className="flex flex-col">
+          <label htmlFor="expertise" className="mb-1">
+            Legal Expertise
+          </label>
+          <input
+            id="expertise"
+            type="text"
+            onChange={(e) => setExpertise(e.target.value)}
+            className="p-2 border rounded"
+          />
+        </div>
+
+        <div className="flex flex-col">
+          <label htmlFor="day" className="mb-1">
+            Availability Day
+          </label>
+          <select
+            id="day"
+            onChange={(e) => setDay(e.target.value)}
+            className="p-2 border rounded"
+          >
+            <option value="">Select a day</option>
+            <option value="Monday">Monday</option>
+            <option value="Tuesday">Tuesday</option>
+            <option value="Wednesday">Wednesday</option>
+            <option value="Thursday">Thursday</option>
+            <option value="Friday">Friday</option>
+          </select>
+        </div>
+
+        <div className="flex flex-col">
+          <label htmlFor="priceRangeMin" className="mb-1">
+            Price Range Min
+          </label>
+          <input
+            id="priceRangeMin"
+            type="range"
+            min="0"
+            max="1000"
+            data-testid="price-range-min"
+            onChange={(e) => setPriceRange([+e.target.value, priceRange[1]])}
+            className="mb-2"
+          />
+          <label htmlFor="priceRangeMax" className="mb-1">
+            Price Range Max
+          </label>
+          <input
+            id="priceRangeMax"
+            type="range"
+            min="0"
+            max="1000"
+            data-testid="price-range-max"
+            onChange={(e) => setPriceRange([priceRange[0], +e.target.value])}
+          />
+        </div>
+
+        <div className="flex flex-col">
+          <label htmlFor="affiliation" className="mb-1">
+            Affiliation
+          </label>
+          <input
+            id="affiliation"
+            type="text"
+            onChange={(e) => setAffiliation(e.target.value)}
+            className="p-2 border rounded"
+          />
+        </div>
+
+        <button
+          type="submit"
+          className="mt-4 p-2 bg-blue-500 text-white rounded"
+        >
+          Filter
+        </button>
       </form>
-      {error && (
-        <div>
-          <h3>Error</h3>
-          <p>{error}</p>
-        </div>
-      )}
-      {response && (
-        <div>
-          <h3>Greeting</h3>
-          <p>{response.message}</p>
-          <Button onClick={onReset}>Reset</Button>
-        </div>
-      )}
+
+      <input
+        type="email"
+        placeholder="Email"
+        className="mt-6 p-2 border rounded"
+      />
+
+      <ul className="mt-6 space-y-4">
+        {filteredLawyers.map((lawyer) => (
+          <li key={lawyer.id}>
+            <LawyerItem lawyer={lawyer} />
+          </li>
+        ))}
+      </ul>
     </div>
   );
-}
+};
+
+export default LawyersPage;
