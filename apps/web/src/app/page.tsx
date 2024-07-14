@@ -2,8 +2,9 @@
 "use client";
 
 import { type Lawyer } from "@repo/domain/src/lawyer-mgmt/Lawyer";
-// import { Button } from "@repo/ui/components/ui/button";
-// import { input } from "@repo/ui/components/ui/input";
+import { Button } from "@repo/ui/components/ui/button";
+import { Input } from "@repo/ui/components/ui/input";
+import { Label } from "@repo/ui/components/ui/label";
 import React, { useState } from "react";
 
 import LawyerItem from "../components/LawyerItem";
@@ -51,10 +52,10 @@ const LawyersPage: React.FC = () => {
 
       <form onSubmit={handleFormSubmit} className="space-y-4">
         <div className="flex flex-col">
-          <label htmlFor="location" className="mb-1">
+          <Label htmlFor="location" className="mb-1">
             Location
-          </label>
-          <input
+          </Label>
+          <Input
             id="location"
             type="text"
             onChange={(e) => setLocation(e.target.value)}
@@ -63,10 +64,10 @@ const LawyersPage: React.FC = () => {
         </div>
 
         <div className="flex flex-col">
-          <label htmlFor="expertise" className="mb-1">
+          <Label htmlFor="expertise" className="mb-1">
             Legal Expertise
-          </label>
-          <input
+          </Label>
+          <Input
             id="expertise"
             type="text"
             onChange={(e) => setExpertise(e.target.value)}
@@ -75,9 +76,9 @@ const LawyersPage: React.FC = () => {
         </div>
 
         <div className="flex flex-col">
-          <label htmlFor="day" className="mb-1">
+          <Label htmlFor="day" className="mb-1">
             Availability Day
-          </label>
+          </Label>
           <select
             id="day"
             onChange={(e) => setDay(e.target.value)}
@@ -93,10 +94,10 @@ const LawyersPage: React.FC = () => {
         </div>
 
         <div className="flex flex-col">
-          <label htmlFor="priceRangeMin" className="mb-1">
+          <Label htmlFor="priceRangeMin" className="mb-1">
             Price Range Min
-          </label>
-          <input
+          </Label>
+          <Input
             id="priceRangeMin"
             type="range"
             min="0"
@@ -105,10 +106,10 @@ const LawyersPage: React.FC = () => {
             onChange={(e) => setPriceRange([+e.target.value, priceRange[1]])}
             className="mb-2"
           />
-          <label htmlFor="priceRangeMax" className="mb-1">
+          <Label htmlFor="priceRangeMax" className="mb-1">
             Price Range Max
-          </label>
-          <input
+          </Label>
+          <Input
             id="priceRangeMax"
             type="range"
             min="0"
@@ -119,10 +120,10 @@ const LawyersPage: React.FC = () => {
         </div>
 
         <div className="flex flex-col">
-          <label htmlFor="affiliation" className="mb-1">
+          <Label htmlFor="affiliation" className="mb-1">
             Affiliation
-          </label>
-          <input
+          </Label>
+          <Input
             id="affiliation"
             type="text"
             onChange={(e) => setAffiliation(e.target.value)}
@@ -130,15 +131,15 @@ const LawyersPage: React.FC = () => {
           />
         </div>
 
-        <button
+        <Button
           type="submit"
           className="mt-4 p-2 bg-blue-500 text-white rounded"
         >
           Filter
-        </button>
+        </Button>
       </form>
 
-      <input
+      <Input
         type="email"
         placeholder="Email"
         className="mt-6 p-2 border rounded"
