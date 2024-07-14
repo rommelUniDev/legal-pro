@@ -35,7 +35,7 @@ const LawyerItem: React.FC<LawyerItemProps> = ({ lawyer }) => {
         <p data-testid={`lawyer-price-${lawyer.id}`} className="text-gray-600">
           Price: ${lawyer.price}/hr
         </p>
-        <p
+        <div
           data-testid={`lawyer-availability-${lawyer.id}`}
           className="text-gray-600"
         >
@@ -47,7 +47,7 @@ const LawyerItem: React.FC<LawyerItemProps> = ({ lawyer }) => {
               </li>
             ))}
           </ul>
-        </p>
+        </div>
       </div>
     </div>
   );
