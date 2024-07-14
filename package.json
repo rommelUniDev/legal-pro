@@ -9,10 +9,11 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo run lint",
     "test": "turbo run test",
-    "ui:add": "pnpm run --filter @repo/ui ui:add"
+    "ui:add": "pnpm run --filter @repo/ui ui:add",
+    "prepare": "husky install"
   },
-  "dependencies": {},
   "devDependencies": {
+    "husky": "^9.0.11",
     "prettier": "^3.2.5",
     "turbo": "^2.0.6"
   },
