@@ -2,9 +2,9 @@
 "use client";
 
 import { type Lawyer } from "@repo/domain/src/lawyer-mgmt/Lawyer";
-import { Button } from "@repo/ui/components/ui/button";
 import { Input } from "@repo/ui/components/ui/input";
 import { Label } from "@repo/ui/components/ui/label";
+import Link from "next/link";
 import React, { useState } from "react";
 
 import LawyerItem from "../components/LawyerItem";
@@ -16,34 +16,42 @@ const LawyersPage: React.FC = () => {
   const [day, setDay] = useState<string>("");
   const [priceRange, setPriceRange] = useState<number[]>([0, 1000]);
   const [affiliation, setAffiliation] = useState<string>("");
+  const [filteredLawyers, setFilteredLawyers] = useState<Lawyer[]>(
+    Object.values(lawyers)
+  );
 
-  const filteredLawyers = Object.values(lawyers).filter((lawyer: Lawyer) => {
-    const matchesLocation = location
-      ? lawyer.location.includes(location)
-      : true;
-    const matchesExpertise = expertise
-      ? lawyer.legalExpertise.includes(expertise)
-      : true;
-    const matchesDay = day
-      ? lawyer.availability.some((avail) => avail.day === day)
-      : true;
-    const matchesPrice =
-      lawyer.price >= priceRange[0] && lawyer.price <= priceRange[1];
-    const matchesAffiliation = affiliation
-      ? lawyer.affiliation.includes(affiliation)
-      : true;
+  // eslint-disable-next-line fp/no-nil
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+    // eslint-disable-next-line fp/no-unused-expression
+    e.preventDefault();
 
-    return (
-      matchesLocation &&
-      matchesExpertise &&
-      matchesDay &&
-      matchesPrice &&
-      matchesAffiliation
-    );
-  });
+    const filtered = Object.values(lawyers).filter((lawyer: Lawyer) => {
+      const matchesLocation = location
+        ? lawyer.location.includes(location)
+        : true;
+      const matchesExpertise = expertise
+        ? lawyer.legalExpertise.includes(expertise)
+        : true;
+      const matchesDay = day
+        ? lawyer.availability.some((avail) => avail.day === day)
+        : true;
+      const matchesPrice =
+        lawyer.price >= priceRange[0] && lawyer.price <= priceRange[1];
+      const matchesAffiliation = affiliation
+        ? lawyer.affiliation.includes(affiliation)
+        : true;
 
-  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    return e.preventDefault();
+      return (
+        matchesLocation &&
+        matchesExpertise &&
+        matchesDay &&
+        matchesPrice &&
+        matchesAffiliation
+      );
+    });
+
+    // eslint-disable-next-line fp/no-unused-expression
+    setFilteredLawyers(filtered);
   };
 
   return (
@@ -131,24 +139,22 @@ const LawyersPage: React.FC = () => {
           />
         </div>
 
-        <Button
+        <button
           type="submit"
           className="mt-4 p-2 bg-blue-500 text-white rounded"
         >
           Filter
-        </Button>
+        </button>
       </form>
-
-      <Input
-        type="email"
-        placeholder="Email"
-        className="mt-6 p-2 border rounded"
-      />
 
       <ul className="mt-6 space-y-4">
         {filteredLawyers.map((lawyer) => (
           <li key={lawyer.id}>
-            <LawyerItem lawyer={lawyer} />
+            <Link href={`/lawyers/${lawyer.id}`}>
+              <div>
+                <LawyerItem lawyer={lawyer} />
+              </div>
+            </Link>
           </li>
         ))}
       </ul>
