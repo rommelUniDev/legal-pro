@@ -1,7 +1,7 @@
 import { type Lawyer, type LawyerId } from "@repo/domain";
 
-export const lawyers: Record<LawyerId, Lawyer> = [
-  {
+export const lawyers: Record<LawyerId, Lawyer> = {
+  1: {
     id: 1,
     name: "John Doe",
     location: "New York",
@@ -13,7 +13,7 @@ export const lawyers: Record<LawyerId, Lawyer> = [
     price: 300,
     affiliation: "ABC Law Firm",
   },
-  {
+  2: {
     id: 2,
     name: "Jane Smith",
     location: "Los Angeles",
@@ -25,7 +25,7 @@ export const lawyers: Record<LawyerId, Lawyer> = [
     price: 250,
     affiliation: "XYZ Legal Services",
   },
-  {
+  3: {
     id: 3,
     name: "Robert Johnson",
     location: "Chicago",
@@ -37,4 +37,4 @@ export const lawyers: Record<LawyerId, Lawyer> = [
     price: 500,
     affiliation: "Green & Partners",
   },
-];
+};
