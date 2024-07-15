@@ -1,6 +1,8 @@
 #!/usr/bin/env sh
 . "$(dirname "$0")/_/husky.sh"
 
+echo "Husky pre-push hook is running!"
+
 # Run linting and tests
 pnpm lint
 pnpm test
