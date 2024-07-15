@@ -1,10 +1,27 @@
-import { type Lawyer } from "@repo/domain";
+import { type Lawyer } from "@repo/domain/src/lawyer-mgmt/Lawyer";
+import { notFound } from "next/navigation";
+import React from "react";
 
-type LawyerItemProps = {
-  lawyer: Lawyer;
+import { lawyers } from "../../../lib/const/dummyLawyerList";
+
+type Params = {
+  params: {
+    lawyerId: string;
+  };
 };
 
-const LawyerProfilePage: React.FC<LawyerItemProps> = ({ lawyer }) => {
+const fetchLawyer = (id: string): Lawyer | undefined => {
+  const lawyerId = parseInt(id, 10);
+  return lawyers[lawyerId];
+};
+
+const LawyerProfilePage = ({ params }: Params) => {
+  const lawyer = fetchLawyer(params.lawyerId);
+
+  if (lawyer === undefined) {
+    return notFound();
+  }
+
   return (
     <div
       data-testid={`lawyer-${lawyer.id}`}
