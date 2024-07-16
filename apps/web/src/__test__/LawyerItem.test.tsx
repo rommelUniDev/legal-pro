@@ -31,39 +31,37 @@ describe("LawyerItem component", () => {
   });
 
   it("renders the lawyer's name", () => {
-    expect(
-      screen.getByTestId(`lawyer-name-${mockLawyer.id}`)
-    ).toHaveTextContent("John Doe");
+    expect(screen.getByTestId(`lawyer-${mockLawyer.id}`)).toHaveTextContent(
+      "John Doe"
+    );
   });
 
   it("renders the lawyer's location", () => {
-    expect(
-      screen.getByTestId(`lawyer-location-${mockLawyer.id}`)
-    ).toHaveTextContent("Location: New York");
+    expect(screen.getByTestId(`lawyer-${mockLawyer.id}`)).toHaveTextContent(
+      "Location: New York"
+    );
   });
 
   it("renders the lawyer's expertise", () => {
-    expect(
-      screen.getByTestId(`lawyer-expertise-${mockLawyer.id}`)
-    ).toHaveTextContent("Expertise: Corporate Law, Tax Law");
+    expect(screen.getByTestId(`lawyer-${mockLawyer.id}`)).toHaveTextContent(
+      "Expertise: Corporate Law, Tax Law"
+    );
   });
 
   it("renders the lawyer's affiliation", () => {
-    expect(
-      screen.getByTestId(`lawyer-affiliation-${mockLawyer.id}`)
-    ).toHaveTextContent("Affiliation: ABC Law Firm");
+    expect(screen.getByTestId(`lawyer-${mockLawyer.id}`)).toHaveTextContent(
+      "Affiliation: ABC Law Firm"
+    );
   });
 
   it("renders the lawyer's price", () => {
-    expect(
-      screen.getByTestId(`lawyer-price-${mockLawyer.id}`)
-    ).toHaveTextContent("Price: $300/hr");
+    expect(screen.getByTestId(`lawyer-${mockLawyer.id}`)).toHaveTextContent(
+      "Price: $300/hr"
+    );
   });
 
   it("renders the lawyer's availability", () => {
-    const availabilityElement = screen.getByTestId(
-      `lawyer-availability-${mockLawyer.id}`
-    );
+    const availabilityElement = screen.getByTestId(`lawyer-${mockLawyer.id}`);
     expect(availabilityElement).toHaveTextContent("Monday (09:00 - 17:00)");
     expect(availabilityElement).toHaveTextContent("Wednesday (10:00 - 16:00)");
   });

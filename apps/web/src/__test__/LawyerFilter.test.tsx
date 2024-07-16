@@ -1,23 +1,28 @@
 /* eslint-disable fp/no-nil */
 /* eslint-disable fp/no-unused-expression */
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
-import "@testing-library/jest-dom";
-import { describe, it, beforeEach, expect, afterEach } from "vitest";
+import { describe, it, beforeEach, expect, afterEach, vi } from "vitest";
 
-import LawyersPage from "../app/page";
+import LawyerFilter from "../components/LawyerFilter";
 
-describe("LawyersPage component", () => {
-  /** Display Test */
+vi.mock("next/navigation", () => {
+  return {
+    useRouter: () => ({
+      push: (url: string) => window.history.pushState({}, "", url),
+    }),
+  };
+});
 
-  it("renders without crashing", () => {
-    render(<LawyersPage />);
-  });
-
+describe("LawyerFilter component", () => {
   beforeEach(() => {
-    render(<LawyersPage />);
+    render(<LawyerFilter />);
   });
 
   afterEach(cleanup);
+
+  it("renders without crashing", () => {
+    render(<LawyerFilter />);
+  });
 
   it("displays the location input field", () => {
     const locationInput = screen.getByLabelText("Location");
@@ -58,21 +63,6 @@ describe("LawyersPage component", () => {
     expect(filterButton).toBeInstanceOf(HTMLButtonElement);
   });
 
-  it("displays the initial list of lawyers", () => {
-    const lawyerItems = screen.getAllByTestId(/^lawyer-/);
-    expect(lawyerItems).not.toHaveLength(0);
-
-    const lawyerNames = lawyerItems.map((item) => {
-      const nameElement = item.querySelector("[data-testid^='lawyer-name-']");
-      return nameElement ? nameElement.textContent : "";
-    });
-
-    console.log(lawyerNames);
-    expect(lawyerNames).toContain("John Doe");
-    expect(lawyerNames).toContain("Jane Smith");
-    expect(lawyerNames).toContain("Robert Johnson");
-  });
-
   /** Functionality Test */
 
   it("filters lawyers by location", () => {
@@ -82,15 +72,7 @@ describe("LawyersPage component", () => {
     const filterButton = screen.getByText("Filter");
     fireEvent.click(filterButton);
 
-    const lawyerItems = screen.getAllByTestId(/^lawyer-/);
-    const lawyerNames = lawyerItems.map((item) => {
-      const nameElement = item.querySelector("[data-testid^='lawyer-name-']");
-      return nameElement ? nameElement.textContent : "";
-    });
-
-    expect(lawyerNames).toContain("John Doe");
-    expect(lawyerNames).not.toContain("Jane Smith");
-    expect(lawyerNames).not.toContain("Robert Johnson");
+    expect(window.location.search).toContain("location=New+York");
   });
 
   it("filters lawyers by legal expertise", () => {
@@ -100,15 +82,7 @@ describe("LawyersPage component", () => {
     const filterButton = screen.getByText("Filter");
     fireEvent.click(filterButton);
 
-    const lawyerItems = screen.getAllByTestId(/^lawyer-/);
-    const lawyerNames = lawyerItems.map((item) => {
-      const nameElement = item.querySelector("[data-testid^='lawyer-name-']");
-      return nameElement ? nameElement.textContent : "";
-    });
-
-    expect(lawyerNames).toContain("John Doe");
-    expect(lawyerNames).not.toContain("Jane Smith");
-    expect(lawyerNames).not.toContain("Robert Johnson");
+    expect(window.location.search).toContain("expertise=Corporate+Law");
   });
 
   it("filters lawyers by availability day", () => {
@@ -118,15 +92,7 @@ describe("LawyersPage component", () => {
     const filterButton = screen.getByText("Filter");
     fireEvent.click(filterButton);
 
-    const lawyerItems = screen.getAllByTestId(/^lawyer-/);
-    const lawyerNames = lawyerItems.map((item) => {
-      const nameElement = item.querySelector("[data-testid^='lawyer-name-']");
-      return nameElement ? nameElement.textContent : "";
-    });
-
-    expect(lawyerNames).toContain("John Doe");
-    expect(lawyerNames).toContain("Robert Johnson");
-    expect(lawyerNames).not.toContain("Jane Smith");
+    expect(window.location.search).toContain("day=Monday");
   });
 
   it("filters lawyers by affiliation", () => {
@@ -136,34 +102,19 @@ describe("LawyersPage component", () => {
     const filterButton = screen.getByText("Filter");
     fireEvent.click(filterButton);
 
-    const lawyerItems = screen.getAllByTestId(/^lawyer-/);
-    const lawyerNames = lawyerItems.map((item) => {
-      const nameElement = item.querySelector("[data-testid^='lawyer-name-']");
-      return nameElement ? nameElement.textContent : "";
-    });
-
-    expect(lawyerNames).toContain("John Doe");
-    expect(lawyerNames).not.toContain("Jane Smith");
-    expect(lawyerNames).not.toContain("Robert Johnson");
+    expect(window.location.search).toContain("affiliation=ABC+Law+Firm");
   });
 
   it("filters lawyers by price range", () => {
-    const priceRangeMin = screen.getByTestId("price-range-min");
-    const priceRangeMax = screen.getByTestId("price-range-max");
+    const priceRangeMin = screen.getByLabelText("Price Range Min");
+    const priceRangeMax = screen.getByLabelText("Price Range Max");
     fireEvent.change(priceRangeMin, { target: { value: "0" } });
     fireEvent.change(priceRangeMax, { target: { value: "250" } });
 
     const filterButton = screen.getByText("Filter");
     fireEvent.click(filterButton);
 
-    const lawyerItems = screen.getAllByTestId(/^lawyer-/);
-    const lawyerNames = lawyerItems.map((item) => {
-      const nameElement = item.querySelector("[data-testid^='lawyer-name-']");
-      return nameElement ? nameElement.textContent : "";
-    });
-
-    expect(lawyerNames).toContain("Jane Smith");
-    expect(lawyerNames).not.toContain("John Doe");
-    expect(lawyerNames).not.toContain("Robert Johnson");
+    expect(window.location.search).toContain("priceRangeMin=0");
+    expect(window.location.search).toContain("priceRangeMax=250");
   });
 });
