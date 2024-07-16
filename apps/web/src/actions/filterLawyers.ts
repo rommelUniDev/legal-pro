@@ -1,4 +1,4 @@
-import { type Lawyer } from "@repo/domain/src/lawyer-mgmt/Lawyer";
+import { type Lawyer } from "@repo/domain";
 
 import { lawyers } from "../lib/const/dummyLawyerList";
 

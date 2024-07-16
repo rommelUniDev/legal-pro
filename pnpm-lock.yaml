@@ -23,9 +23,6 @@ importers:
       '@repo/domain':
         specifier: workspace:*
         version: link:../../packages/01-domain
-      '@repo/ui':
-        specifier: workspace:*
-        version: link:../../configs/ui
       next:
         specifier: ^14.1.1
         version: 14.2.5(@babel/core@7.24.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -81,6 +78,9 @@ importers:
       tailwindcss:
         specifier: ^3.4.4
         version: 3.4.4
+      tailwindcss-animate:
+        specifier: ^1.0.7
+        version: 1.0.7(tailwindcss@3.4.4)
       typescript:
         specifier: ^5.3.3
         version: 5.5.3

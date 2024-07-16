@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "@repo/domain": "workspace:*",
-    "@repo/ui": "workspace:*",
     "next": "^14.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -33,6 +32,7 @@
     "jsdom": "^24.1.0",
     "postcss": "^8.4.39",
     "tailwindcss": "^3.4.4",
+    "tailwindcss-animate": "^1.0.7",
     "typescript": "^5.3.3",
     "vitest": "^2.0.2"
   }
