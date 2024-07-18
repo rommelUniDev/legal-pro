@@ -37,9 +37,11 @@ const LawyersPage: React.FC<{
   const filteredLawyers = await filterLawyers(filters);
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Lawyers</h1>
-      <LawyerFilter />
+    <div className="flex flex-col mx-auto p-4 max-w-screen-lg">
+      <h1 className="text-3xl font-bold mb-4 text-center">Legal Pro</h1>
+      <div className="mb-8">
+        <LawyerFilter />
+      </div>
       <LawyerList lawyers={filteredLawyers} />
     </div>
   );
