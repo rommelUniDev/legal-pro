@@ -4,3 +4,4 @@
 # Run linting and tests
 pnpm lint
 pnpm test
+pnpm build

@@ -6,4 +6,8 @@ module.exports = {
   parserOptions: {
     project: true,
   },
+  rules: {
+    "fp/no-rest-parameters": "off",
+    "fp/no-mutation": "off",
+  },
 };
