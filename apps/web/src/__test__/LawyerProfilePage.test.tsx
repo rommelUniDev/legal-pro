@@ -1,6 +1,6 @@
 /* eslint-disable fp/no-nil */
 /* eslint-disable fp/no-unused-expression */
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { notFound } from "next/navigation";
 import React from "react";
@@ -29,9 +29,9 @@ describe("LawyerProfilePage component", () => {
 
     expect(screen.getByText("John Doe")).toBeInTheDocument();
     expect(screen.getByText("Location: New York")).toBeInTheDocument();
-    expect(
-      screen.getByText("Expertise: Corporate Law, Tax Law")
-    ).toBeInTheDocument();
+
+    expect(screen.getByText("Corporate Law, Tax Law")).toBeInTheDocument();
+
     expect(screen.getByText("Affiliation: ABC Law Firm")).toBeInTheDocument();
     expect(screen.getByText("Price: $300/hr")).toBeInTheDocument();
   });
@@ -41,5 +41,15 @@ describe("LawyerProfilePage component", () => {
     render(<LawyerProfilePage {...params} />);
 
     expect(notFound).toHaveBeenCalled();
+  });
+
+  it("redirects to the home page when the back button is clicked", () => {
+    const params = { params: { lawyerId: "1" } };
+    render(<LawyerProfilePage {...params} />);
+
+    const backButton = screen.getByText("Back");
+    fireEvent.click(backButton);
+
+    expect(window.location.pathname).toBe("/");
   });
 });

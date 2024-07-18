@@ -106,15 +106,55 @@ describe("LawyerFilter component", () => {
   });
 
   it("filters lawyers by price range", () => {
-    const priceRangeMin = screen.getByLabelText("Price Range Min");
-    const priceRangeMax = screen.getByLabelText("Price Range Max");
-    fireEvent.change(priceRangeMin, { target: { value: "0" } });
-    fireEvent.change(priceRangeMax, { target: { value: "250" } });
+    const priceRangeMinLabel = screen.getByText(/Price Range Min:/);
+    const priceRangeMinInput =
+      priceRangeMinLabel.nextElementSibling as HTMLInputElement;
+    const priceRangeMaxLabel = screen.getByText(/Price Range Max:/);
+    const priceRangeMaxInput =
+      priceRangeMaxLabel.nextElementSibling as HTMLInputElement;
+
+    fireEvent.change(priceRangeMinInput, { target: { value: "0" } });
+    fireEvent.change(priceRangeMaxInput, { target: { value: "250" } });
 
     const filterButton = screen.getByText("Filter");
     fireEvent.click(filterButton);
 
     expect(window.location.search).toContain("priceRangeMin=0");
     expect(window.location.search).toContain("priceRangeMax=250");
+  });
+
+  it("resets the filters when the reset button is clicked", () => {
+    const locationInput = screen.getByLabelText("Location");
+    fireEvent.change(locationInput, { target: { value: "New York" } });
+
+    const expertiseInput = screen.getByLabelText("Legal Expertise");
+    fireEvent.change(expertiseInput, { target: { value: "Corporate Law" } });
+
+    const daySelect = screen.getByLabelText("Availability Day");
+    fireEvent.change(daySelect, { target: { value: "Monday" } });
+
+    const affiliationInput = screen.getByLabelText("Affiliation");
+    fireEvent.change(affiliationInput, { target: { value: "ABC Law Firm" } });
+
+    const priceRangeMinLabel = screen.getByText(/Price Range Min:/);
+    const priceRangeMinInput =
+      priceRangeMinLabel.nextElementSibling as HTMLInputElement;
+    const priceRangeMaxLabel = screen.getByText(/Price Range Max:/);
+    const priceRangeMaxInput =
+      priceRangeMaxLabel.nextElementSibling as HTMLInputElement;
+
+    fireEvent.change(priceRangeMinInput, { target: { value: "0" } });
+    fireEvent.change(priceRangeMaxInput, { target: { value: "250" } });
+
+    const resetButton = screen.getByText("Reset");
+    fireEvent.click(resetButton);
+
+    expect((locationInput as HTMLInputElement).value).toBe("");
+    expect((expertiseInput as HTMLInputElement).value).toBe("");
+    expect((daySelect as HTMLSelectElement).value).toBe("");
+    expect(priceRangeMinInput.value).toBe("0");
+    expect(priceRangeMaxInput.value).toBe("1000");
+    expect((affiliationInput as HTMLInputElement).value).toBe("");
+    expect(window.location.pathname).toBe("/");
   });
 });
